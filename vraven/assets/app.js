@@ -4,23 +4,26 @@ const sections = [
     ["start", "Install and start", "guides/getting-started.html"],
     ["folder", "Use a model folder", "guides/model-folder.html"],
   ]],
-  ["Workflows", [
+  ["Tutorials", [
     ["explain", "Explain a decision", "guides/explain.html"],
     ["adversarial", "Test adversarially", "guides/adversarial.html"],
     ["counterfactual", "Find a counterfactual", "guides/counterfactual.html"],
+    ["walkthrough", "MobileNetV2 case study", "walkthroughs/mobilenet-v2.html"],
   ]],
-  ["Explore", [
-    ["walkthrough", "MobileNetV2 walkthrough", "walkthroughs/mobilenet-v2.html"],
+  ["Outputs", [
+    ["outputs", "Output guide", "outputs/index.html"],
     ["capabilities", "Capability map", "capabilities.html"],
     ["visuals", "Visual catalogue", "visuals.html"],
     ["gallery", "Example output", "gallery.html"],
-    ["python", "Python API", "python-api.html"],
-    ["science", "Evidence and claims", "science.html"],
   ]],
   ["Reference", [
+    ["api", "Python API", "api/index.html"],
+    ["cli", "CLI reference", "cli/index.html"],
     ["reports", "Report formats", "guides/reports.html"],
-    ["commands", "CLI commands", "guides/commands.html"],
     ["troubleshooting", "Troubleshooting", "guides/troubleshooting.html"],
+  ]],
+  ["Science", [
+    ["science", "Evidence and claims", "science.html"],
   ]],
 ];
 
@@ -69,4 +72,25 @@ document.querySelectorAll("pre code").forEach((code) => {
     window.setTimeout(() => { button.textContent = "Copy"; }, 1300);
   });
   code.parentElement.append(button);
+});
+
+const referenceFilter = document.querySelector("#reference-filter");
+if (referenceFilter) {
+  const params = new URLSearchParams(window.location.search);
+  referenceFilter.value = params.get("q") || "";
+  const applyFilter = () => {
+    const query = referenceFilter.value.trim().toLowerCase();
+    document.querySelectorAll(".api-row").forEach((row) => {
+      row.hidden = Boolean(query) && !row.textContent.toLowerCase().includes(query);
+    });
+  };
+  referenceFilter.addEventListener("input", applyFilter);
+  applyFilter();
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.metaKey || event.ctrlKey || event.altKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || "")) return;
+  const destination = event.key.toLowerCase() === "k" ? document.querySelector('a[rel="prev"]')
+    : event.key.toLowerCase() === "j" ? document.querySelector('a[rel="next"]') : null;
+  if (destination) destination.click();
 });
