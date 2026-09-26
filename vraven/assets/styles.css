@@ -489,18 +489,28 @@ pre.has-syntax::after {
   background: linear-gradient(90deg, #8f1728, #274f82 46%, transparent 78%);
   opacity: .65;
 }
-pre.has-syntax code { color: #d9d4cc; text-shadow: 0 1px #000; }
-.tok-keyword { color: #78aaf2; font-weight: 700; }
-.tok-function { color: #9bc4ff; }
-.tok-namespace { color: #4e9cff; font-weight: 800; }
-.tok-class { color: #f05f75; font-weight: 750; }
-.tok-string { color: #e46b79; }
-.tok-property { color: #80b6ff; }
-.tok-option { color: #e06a79; }
-.tok-variable { color: #8fbef7; }
-.tok-number { color: #d88b96; }
-.tok-operator { color: #c83d52; }
-.tok-comment { color: #747b87; font-style: italic; }
+pre.has-syntax code { color: #d7dde7; text-shadow: 0 1px #000; }
+.tok-keyword { color: #c792ea; font-weight: 700; }
+.tok-function { color: #45d6c4; }
+.tok-method { color: #c792ea; }
+.tok-builtin { color: #4fd6be; }
+.tok-namespace { color: #5eb4ff; font-weight: 800; }
+.tok-class { color: #ff6b7f; font-weight: 750; }
+.tok-parameter { color: #ffa657; }
+.tok-variable { color: #d7dde7; }
+.tok-attribute { color: #bd93f9; }
+.tok-string { color: #8ecbff; }
+.tok-property { color: #ff9f55; }
+.tok-option { color: #ff8f56; }
+.tok-number { color: #b5d98c; }
+.tok-constant { color: #66aaff; font-weight: 650; }
+.tok-operator { color: #ff667d; }
+.tok-punctuation { color: #ffd60a; }
+.tok-brace { color: #ff68d4; }
+.tok-delimiter { color: #9aa4b2; }
+.tok-comment { color: #6f7886; font-style: italic; }
+code.language-shell .tok-variable { color: #c792ea; }
+.tok-path { color: #b5d98c; }
 .terminal pre.has-syntax { padding-top: 20px; border-left: 0; box-shadow: none; }
 .terminal pre.has-syntax::before, .terminal pre.has-syntax::after { display: none; }
 

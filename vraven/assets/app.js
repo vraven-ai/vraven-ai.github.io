@@ -113,29 +113,65 @@ const paintCode = (source, pattern, classify) => {
 };
 
 const pythonKeywords = new Set(["False", "None", "True", "and", "as", "assert", "async", "await", "break", "case", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "match", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield"]);
+const pythonConstants = new Set(["False", "None", "True", "NotImplemented", "Ellipsis"]);
+const pythonBuiltins = new Set(["abs", "all", "any", "bool", "bytes", "callable", "dict", "enumerate", "filter", "float", "frozenset", "getattr", "hasattr", "hash", "help", "hex", "id", "input", "int", "isinstance", "issubclass", "iter", "len", "list", "map", "max", "min", "next", "object", "open", "ord", "pow", "print", "property", "range", "repr", "reversed", "round", "set", "slice", "sorted", "str", "sum", "super", "tuple", "type", "vars", "zip"]);
 const shellCommands = new Set(["cd", "curl", "echo", "export", "git", "mkdir", "pip", "pip3", "python", "python3", "source", "vraven"]);
+
+const highlightPython = (source) => {
+  const tokenPattern = /(?:[rubfRUBF]{0,2})(?:"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|#[^\n]*|\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b|\b[A-Za-z_]\w*\b|==|!=|<=|>=|:=|->|\*\*|\/\/|<<|>>|\.\.\.|[()\[\]{},.:;=+\-*\/%@<>!&|^~]|\s+|./gi;
+  const tokens = source.match(tokenPattern) || [];
+  const isSpace = (token) => /^\s+$/.test(token);
+  const previousToken = (index) => {
+    for (let cursor = index - 1; cursor >= 0; cursor -= 1) if (!isSpace(tokens[cursor])) return tokens[cursor];
+    return "";
+  };
+  const nextToken = (index) => {
+    for (let cursor = index + 1; cursor < tokens.length; cursor += 1) if (!isSpace(tokens[cursor])) return tokens[cursor];
+    return "";
+  };
+  let expressionDepth = 0;
+  return tokens.map((token, index) => {
+    if (isSpace(token)) return token;
+    let kind = "plain";
+    if (token.startsWith("#")) kind = "comment";
+    else if (/^(?:[rubf]{0,2})["']/i.test(token)) kind = "string";
+    else if (/^\d/.test(token)) kind = "number";
+    else if (/^[A-Za-z_]\w*$/.test(token)) {
+      const previous = previousToken(index);
+      const next = nextToken(index);
+      if (pythonConstants.has(token)) kind = "constant";
+      else if (pythonKeywords.has(token)) kind = "keyword";
+      else if (token === "vraven") kind = "namespace";
+      else if (pythonBuiltins.has(token)) kind = "builtin";
+      else if (previous === "def") kind = "function";
+      else if (previous === "class" || /^[A-Z]/.test(token)) kind = "class";
+      else if (next === "=" && expressionDepth > 0 && !["=", "!", "<", ">"].includes(previous)) kind = "parameter";
+      else if (previous === ".") kind = next === "(" ? "method" : "attribute";
+      else if (next === "(") kind = "function";
+      else kind = "variable";
+    } else if (/^[()\[\]]$/.test(token)) kind = "punctuation";
+    else if (/^[{}]$/.test(token)) kind = "brace";
+    else if (/^[,.:;]$/.test(token)) kind = "delimiter";
+    else kind = "operator";
+    if (/^[([{]$/.test(token)) expressionDepth += 1;
+    if (/^[)\]}]$/.test(token)) expressionDepth = Math.max(0, expressionDepth - 1);
+    return kind === "plain" ? escapeCode(token) : `<span class="tok-${kind}">${escapeCode(token)}</span>`;
+  }).join("");
+};
 
 const highlightCode = (source, language) => {
   if (language === "python") {
-    const pattern = /("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\b(?:False|None|True|and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\b|\bvraven\b|\b[A-Z][A-Za-z0-9_]*\b|\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b|[+\-*\/%=<>!&|^~:@]+|\b[A-Za-z_]\w*(?=\s*\())/g;
-    return paintCode(source, pattern, (token) => {
-      if (token.startsWith("#")) return "comment";
-      if (/^["']/.test(token)) return "string";
-      if (pythonKeywords.has(token)) return "keyword";
-      if (token === "vraven") return "namespace";
-      if (/^[A-Z]/.test(token)) return "class";
-      if (/^\d/.test(token)) return "number";
-      if (/^[+\-*\/%=<>!&|^~:@]/.test(token)) return "operator";
-      return "function";
-    });
+    return highlightPython(source);
   }
   if (language === "shell") {
-    const pattern = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\$\{?[A-Za-z_][A-Za-z0-9_]*\}?|--?[A-Za-z][\w-]*|\b(?:cd|curl|echo|export|git|mkdir|pip3?|python3?|source|vraven)\b|&&|\|\||[|>;])/g;
+    const pattern = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\$\{?[A-Za-z_][A-Za-z0-9_]*\}?|--?[A-Za-z][\w-]*|(?:\.{0,2}\/)?(?:[\w.-]+\/)+[\w.-]+|\b\d+(?:\.\d+)?\b|\b(?:cd|curl|echo|export|git|mkdir|pip3?|python3?|source|vraven)\b|&&|\|\||[|>;])/g;
     return paintCode(source, pattern, (token) => {
       if (token.startsWith("#")) return "comment";
       if (/^["']/.test(token)) return "string";
       if (token.startsWith("$")) return "variable";
       if (token.startsWith("-")) return "option";
+      if (/^\d/.test(token)) return "number";
+      if (token.includes("/")) return "path";
       if (shellCommands.has(token)) return "function";
       return "operator";
     });
