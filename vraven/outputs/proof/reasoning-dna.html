@@ -11,8 +11,13 @@
 <div class="output-nav"><a rel="prev" title="Perturbation Stability" href="perturbation-stability.html">← Prev (K)</a><span>image_pattern_cnn2d · <a href="../../assets/artifacts/reasoning_dna_publication_light.png">Open result image ↗</a></span><a rel="next" title="Reasoning Graph" href="reasoning-graph.html">Next (J) →</a></div>
 <figure class="evidence-figure"><a href="../../assets/artifacts/reasoning_dna_publication_light.png"><img src="../../assets/artifacts/reasoning_dna_publication_light.png" alt="Reasoning Dna result for the image_pattern_cnn2d fixture"></a><figcaption>Real output from the small deterministic CNN-2D documentation fixture.</figcaption></figure>
 <section class="reading-grid"><div><h2>What it shows</h2><p>A compact fingerprint of the captured reasoning pattern.</p></div><div><h2>Claim boundary</h2><p>This is evidence for this input and model state, not a universal statement about every input.</p></div></section>
-<h2>Run the complete fixture</h2>
-<p>This one command recreates the report family using a small local model bundle.</p><pre><code>python3 scripts/run_vraven_artifact.py Models/image_pattern_cnn2d</code></pre>
+<h2>Run this with the installed CLI</h2>
+<p>Point VRAVEN at a validated model bundle. This produces one focused HTML report and works after a normal PyPI installation.</p><pre><code>vraven analyse ./my-model \
+  --task explain \
+  --preset standard \
+  --format html \
+  --output vraven-report.html</code></pre>
+<p>Start with the <a href="../../guides/model-folder.html">model-folder guide</a> if your bundle is not prepared yet. The larger documentation fixture is a contributor workflow described in <a href="../../guides/source-checkout.html">Develop from source</a>.</p>
 <h2>Generate this view</h2><pre><code># Use the typed result object returned by the matching analysis.
 figure = report.figure(&quot;reasoning_dna&quot;, mode=&quot;publication_light&quot;)
 figure.write_html(&quot;result.html&quot;)</code></pre>

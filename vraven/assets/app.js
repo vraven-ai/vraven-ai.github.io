@@ -4,6 +4,7 @@ const sections = [
     ["identity", "Identity and origin", "identity.html"],
     ["start", "Install and start", "guides/getting-started.html"],
     ["folder", "Use a model folder", "guides/model-folder.html"],
+    ["source", "Develop from source", "guides/source-checkout.html"],
   ]],
   ["Tutorials", [
     ["explain", "Explain a decision", "guides/explain.html"],
@@ -302,10 +303,12 @@ document.addEventListener("keydown", (event) => {
   if (destination) destination.click();
 });
 
-const footer = document.querySelector("footer");
-if (footer) {
-  footer.innerHTML = `<div class="footer-note">VRAVEN · Visual Reasoning and Activation Visualisation for Explainable Networks · Apache-2.0</div><div class="footer-meta"><span>© 2026 VRAVEN</span><a href="${root}/identity.html">Identity &amp; origin</a><a href="${root}/research.html">Research lineage</a><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
+let footer = document.querySelector("footer");
+if (!footer) {
+  footer = document.createElement("footer");
+  document.querySelector("main")?.append(footer);
 }
+footer.innerHTML = `<div class="footer-note">VRAVEN · Visual Reasoning and Activation Visualisation for Explainable Networks · Apache-2.0</div><div class="footer-meta"><span>© 2026 VRAVEN</span><a href="${root}/identity.html">Identity &amp; origin</a><a href="${root}/research.html">Research lineage</a><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
 
 if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
   document.body.classList.add("motion-ready");
