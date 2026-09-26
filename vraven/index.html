@@ -2,31 +2,52 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="VRAVEN documentation: explain, test and inspect trained PyTorch models.">
-  <title>VRAVEN documentation</title><link rel="stylesheet" href="assets/styles.css">
+  <meta name="description" content="VRAVEN documentation: observe, test and explain trained PyTorch models with evidence-aware reports.">
+  <title>VRAVEN · Model observatory</title><link rel="stylesheet" href="assets/styles.css">
 </head>
 <body data-page="home" data-root=".">
 <div class="page"><main id="content" class="content">
-  <div class="eyebrow">PyTorch model explanation</div>
-  <h1>Follow the evidence inside your model.</h1>
-  <p class="lede">VRAVEN turns a trained PyTorch model into testable explanations, focused analyses and one clear report at a time.</p>
-  <div class="actions"><a class="button primary" href="guides/getting-started.html">Start in five minutes</a><a class="button" href="guides/model-folder.html">I have a model folder</a></div>
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Model observatory · local first</div>
+      <h1>Observe.<br>Test. Explain.</h1>
+      <p class="lede">VRAVEN turns trained PyTorch models into inspectable mechanisms, controlled tests and evidence-aware reports—from one prediction to an entire model population.</p>
+      <div class="actions"><a class="button primary" href="guides/getting-started.html">Run your first analysis</a><a class="button" href="capabilities.html">Explore every capability</a></div>
+      <div class="status-line"><span class="status">Runs locally</span><span class="status">Python 3.10+</span><span class="status">PyTorch 2.2+</span></div>
+    </div>
+    <div class="hero-mark"><img src="assets/vraven-avatar.png" alt="VRAVEN raven perched on a branch"></div>
+  </section>
 
-  <div class="hero-card"><img src="assets/vraven-methodology.png" alt="The twelve-stage VRAVEN methodology"><div class="caption">Figure 3. The twelve-stage VRAVEN methodology—from a trained model to a tested Decision Proof.</div></div>
-
-  <h2>Choose the problem you want to solve</h2>
-  <div class="grid">
-    <article class="card"><span class="number">01 · START</span><h3><a href="guides/getting-started.html">Install and verify VRAVEN</a></h3><p>Create a clean environment, install the package and produce your first local report.</p></article>
-    <article class="card"><span class="number">02 · LOAD</span><h3><a href="guides/model-folder.html">Point VRAVEN at a folder</a></h3><p>Keep the model, architecture, input and defaults together in one portable bundle.</p></article>
-    <article class="card"><span class="number">03 · EXPLAIN</span><h3><a href="guides/explain.html">Explain one decision</a></h3><p>Capture internal evidence and create one HTML, PDF or JSON report.</p></article>
-    <article class="card"><span class="number">04 · STRESS</span><h3><a href="guides/adversarial.html">Measure adversarial behaviour</a></h3><p>Run bounded empirical attacks and retain the exact protocol in the result.</p></article>
-    <article class="card"><span class="number">05 · CHANGE</span><h3><a href="guides/counterfactual.html">Find a counterfactual</a></h3><p>Search for a bounded input change that reaches a selected target class.</p></article>
-    <article class="card"><span class="number">06 · EXPORT</span><h3><a href="guides/reports.html">Choose one report format</a></h3><p>Produce the single artefact needed by a person, pipeline or publication.</p></article>
+  <div class="metrics" aria-label="VRAVEN capability summary">
+    <div class="metric"><strong>7</strong><span>analysis families</span></div>
+    <div class="metric"><strong>20</strong><span>core visual methods</span></div>
+    <div class="metric"><strong>7</strong><span>Reverse views</span></div>
+    <div class="metric"><strong>18</strong><span>DarkSide audits</span></div>
+    <div class="metric"><strong>3</strong><span>evidence modes</span></div>
   </div>
 
-  <h2>What VRAVEN measures</h2>
-  <ul class="checklist"><li>Internal activations, gradients, attribution and information pathways</li><li>Observational evidence and intervention evidence as separate quantities</li><li>Stability, counterfactual and adversarial behaviour under declared constraints</li><li>Coverage, unresolved computation and limitations alongside every strong claim</li></ul>
-  <div class="callout"><strong>Local by default</strong>Your model and tensors stay on your machine. VRAVEN does not add telemetry or upload model artefacts.</div>
-  <footer>VRAVEN means Visual Reasoning and Activation Visualisation for Explainable Networks.</footer>
+  <div class="section-head"><div><div class="eyebrow">Choose a lens</div><h2>One model. Seven ways to investigate it.</h2></div><p>Start with the scientific question, not a wall of options.</p></div>
+  <div class="family-grid">
+    <a class="family" href="capabilities.html#capture"><span class="kicker">Acquire</span><h3>Capture</h3><p>Record activations, gradients, metadata and Mechanism IR from a real forward pass.</p><span class="count">01</span></a>
+    <a class="family" href="capabilities.html#proof"><span class="kicker">Explain</span><h3>Proof</h3><p>Build a single-prediction explanation with traceable evidence and exportable visuals.</p><span class="count">02</span></a>
+    <a class="family" href="capabilities.html#reverse"><span class="kicker">Decompile</span><h3>Reverse</h3><p>Recover the decision programme, test its fidelity and issue causal or robustness certificates.</p><span class="count">03</span></a>
+    <a class="family" href="capabilities.html#atlas"><span class="kicker">Map</span><h3>Atlas</h3><p>Explore representation communities, similarity, outliers and reasoning landscapes across samples.</p><span class="count">04</span></a>
+    <a class="family" href="capabilities.html#watch"><span class="kicker">Track</span><h3>Watch</h3><p>Measure how internal representations and decisions evolve across checkpoints.</p><span class="count">05</span></a>
+    <a class="family" href="capabilities.html#darkside"><span class="kicker">Audit</span><h3>Compare + DarkSide</h3><p>Contrast models, expose shortcuts, drift, failure anatomy, rerouting and uncertainty.</p><span class="count">06</span></a>
+  </div>
+
+  <div class="section-head"><div><div class="eyebrow">Public walkthrough</div><h2>Evidence you can inspect.</h2></div><p>These results come from torchvision MobileNetV2 and one openly licensed Labrador photograph.</p></div>
+  <div class="gallery-grid">
+    <article class="shot"><img src="assets/walkthrough/decision-flow.png" alt="VRAVEN MobileNetV2 decision flow"><div class="shot-body"><strong>Decision flow</strong><span>Supporting and opposing first-order signals through 96 captured layers</span></div></article>
+    <article class="shot"><img src="assets/walkthrough/causal-pathway.png" alt="VRAVEN MobileNetV2 intervention results"><div class="shot-body"><strong>Intervention evidence</strong><span>Three controlled layer-output interventions for the Labrador target</span></div></article>
+  </div>
+  <div class="actions"><a class="button primary" href="walkthroughs/mobilenet-v2.html">Follow the full walkthrough</a><a class="button" href="gallery.html">Open the output gallery</a></div>
+
+  <div class="section-head"><div><div class="eyebrow">A disciplined path</div><h2>From model file to defensible claim.</h2></div></div>
+  <div class="pathway"><div><small>01</small><strong>Load</strong><span class="muted">Model or bundle</span></div><div><small>02</small><strong>Observe</strong><span class="muted">Activations and paths</span></div><div><small>03</small><strong>Intervene</strong><span class="muted">Change and retest</span></div><div><small>04</small><strong>Report</strong><span class="muted">Evidence + limits</span></div></div>
+  <div class="hero-card"><img src="assets/vraven-methodology.png" alt="The twelve-stage VRAVEN methodology"><div class="caption">Figure 3. The twelve-stage VRAVEN methodology—from a trained model to a tested Decision Proof.</div></div>
+
+  <div class="callout"><strong>Your model stays yours</strong>VRAVEN runs locally, adds no telemetry and does not upload models or tensors. Reports disclose evidence type, coverage and unresolved computation.</div>
+  <footer>VRAVEN · Visual Reasoning and Activation Visualisation for Explainable Networks · Apache-2.0</footer>
 </main></div><script src="assets/app.js"></script>
 </body></html>

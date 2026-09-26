@@ -1,20 +1,36 @@
-const pages = [
-  ["home", "Overview", "index.html"],
-  ["start", "Install and start", "guides/getting-started.html"],
-  ["folder", "Use a model folder", "guides/model-folder.html"],
-  ["explain", "Explain one decision", "guides/explain.html"],
-  ["adversarial", "Test adversarially", "guides/adversarial.html"],
-  ["counterfactual", "Find a counterfactual", "guides/counterfactual.html"],
-  ["reports", "Choose a report", "guides/reports.html"],
-  ["commands", "Choose a command", "guides/commands.html"],
-  ["troubleshooting", "Fix an installation", "guides/troubleshooting.html"],
+const sections = [
+  ["Start", [
+    ["home", "Overview", "index.html"],
+    ["start", "Install and start", "guides/getting-started.html"],
+    ["folder", "Use a model folder", "guides/model-folder.html"],
+  ]],
+  ["Workflows", [
+    ["explain", "Explain a decision", "guides/explain.html"],
+    ["adversarial", "Test adversarially", "guides/adversarial.html"],
+    ["counterfactual", "Find a counterfactual", "guides/counterfactual.html"],
+  ]],
+  ["Explore", [
+    ["walkthrough", "MobileNetV2 walkthrough", "walkthroughs/mobilenet-v2.html"],
+    ["capabilities", "Capability map", "capabilities.html"],
+    ["visuals", "Visual catalogue", "visuals.html"],
+    ["gallery", "Example output", "gallery.html"],
+    ["python", "Python API", "python-api.html"],
+    ["science", "Evidence and claims", "science.html"],
+  ]],
+  ["Reference", [
+    ["reports", "Report formats", "guides/reports.html"],
+    ["commands", "CLI commands", "guides/commands.html"],
+    ["troubleshooting", "Troubleshooting", "guides/troubleshooting.html"],
+  ]],
 ];
 
 const root = document.body.dataset.root || ".";
 const current = document.body.dataset.page;
-const nav = pages.map(([id, label, path]) =>
-  `<a href="${root}/${path}"${id === current ? ' aria-current="page"' : ""}>${label}</a>`
-).join("");
+const nav = sections.map(([section, pages]) => `
+  <div class="nav-label">${section}</div>
+  <nav class="nav">${pages.map(([id, label, path]) =>
+    `<a href="${root}/${path}"${id === current ? ' aria-current="page"' : ""}>${label}</a>`
+  ).join("")}</nav>`).join("");
 
 document.body.insertAdjacentHTML("afterbegin", `
   <a class="skip-link" href="#content">Skip to content</a>
@@ -27,8 +43,7 @@ document.body.insertAdjacentHTML("afterbegin", `
       <img src="${root}/assets/vraven-avatar.png" alt="">
       <span><strong>VRAVEN</strong><span>Documentation</span></span>
     </a>
-    <div class="nav-label">Learn</div>
-    <nav class="nav">${nav}</nav>
+    <div class="nav-scroll">${nav}</div>
     <div class="sidebar-bottom">
       <a href="https://github.com/vraven-ai/vraven">GitHub</a>
       <a href="https://pypi.org/project/vraven/">PyPI</a>
