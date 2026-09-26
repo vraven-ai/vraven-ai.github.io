@@ -454,6 +454,49 @@ footer {
 .paper p { margin: 0; color: var(--muted); font-size: .9rem; }
 .paper > a { white-space: nowrap; text-decoration: none; font-size: .8rem; font-weight: 700; }
 
+/* Built-in syntax colour: dependency-free and shared by every documentation page. */
+pre.has-syntax {
+  padding-top: 49px;
+  border-color: #3c3944;
+  border-left: 3px solid #9f1729;
+  background:
+    linear-gradient(90deg, rgba(151, 16, 36, .07), transparent 18%),
+    #0d0d10;
+  box-shadow: inset 0 1px rgba(255, 255, 255, .025), 0 18px 45px rgba(0, 0, 0, .16);
+}
+pre.has-syntax::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  color: #7da9e8;
+  font: 800 .64rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+pre.has-syntax::after {
+  content: "";
+  position: absolute;
+  top: 34px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #8f1728, #274f82 46%, transparent 78%);
+  opacity: .65;
+}
+pre.has-syntax code { color: #d9d4cc; text-shadow: 0 1px #000; }
+.tok-keyword { color: #78aaf2; font-weight: 700; }
+.tok-function { color: #9bc4ff; }
+.tok-string { color: #e46b79; }
+.tok-property { color: #80b6ff; }
+.tok-option { color: #e06a79; }
+.tok-variable { color: #8fbef7; }
+.tok-number { color: #d88b96; }
+.tok-operator { color: #c83d52; }
+.tok-comment { color: #747b87; font-style: italic; }
+.terminal pre.has-syntax { padding-top: 20px; border-left: 0; box-shadow: none; }
+.terminal pre.has-syntax::before, .terminal pre.has-syntax::after { display: none; }
+
 /* Identity and origin — the raven mark, the name, and the research lineage. */
 .vraven-wordmark {
   position: relative;

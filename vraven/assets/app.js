@@ -81,13 +81,94 @@ document.querySelector(".page")?.addEventListener("click", () => {
   if (document.body.classList.contains("menu-open") && window.matchMedia("(max-width: 900px)").matches) closeMenu();
 });
 
+const escapeCode = (value) => value
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;");
+
+const detectCodeLanguage = (source, code) => {
+  const declared = [...code.classList].find((name) => name.startsWith("language-"));
+  if (declared) return declared.slice("language-".length).toLowerCase();
+  const trimmed = source.trim();
+  if (/^(?:\$\s*)?(?:python\d*|pip\d*|vraven|source|git|curl|mkdir|cd|export|echo)\b/m.test(trimmed)) return "shell";
+  if (/^(?:\{|\[)/.test(trimmed)) {
+    try { JSON.parse(trimmed); return "json"; } catch { /* continue detecting */ }
+  }
+  if (/(?:^|\n)\s*(?:from\s+\S+\s+import|import\s+\S+|def\s+|class\s+|@\w+|#)|\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*\s*\([^\n)]*\)/.test(source)) return "python";
+  if (/<\/?[A-Za-z][^>]*>/.test(source)) return "html";
+  return "text";
+};
+
+const paintCode = (source, pattern, classify) => {
+  let output = "";
+  let cursor = 0;
+  let match;
+  pattern.lastIndex = 0;
+  while ((match = pattern.exec(source)) !== null) {
+    output += escapeCode(source.slice(cursor, match.index));
+    output += `<span class="tok-${classify(match[0])}">${escapeCode(match[0])}</span>`;
+    cursor = match.index + match[0].length;
+  }
+  return output + escapeCode(source.slice(cursor));
+};
+
+const pythonKeywords = new Set(["False", "None", "True", "and", "as", "assert", "async", "await", "break", "case", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "match", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield"]);
+const shellCommands = new Set(["cd", "curl", "echo", "export", "git", "mkdir", "pip", "pip3", "python", "python3", "source", "vraven"]);
+
+const highlightCode = (source, language) => {
+  if (language === "python") {
+    const pattern = /("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\b(?:False|None|True|and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\b|\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b|[+\-*\/%=<>!&|^~:@]+|\b[A-Za-z_]\w*(?=\s*\())/gi;
+    return paintCode(source, pattern, (token) => {
+      if (token.startsWith("#")) return "comment";
+      if (/^["']/.test(token)) return "string";
+      if (pythonKeywords.has(token)) return "keyword";
+      if (/^\d/.test(token)) return "number";
+      if (/^[+\-*\/%=<>!&|^~:@]/.test(token)) return "operator";
+      return "function";
+    });
+  }
+  if (language === "shell") {
+    const pattern = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\$\{?[A-Za-z_][A-Za-z0-9_]*\}?|--?[A-Za-z][\w-]*|\b(?:cd|curl|echo|export|git|mkdir|pip3?|python3?|source|vraven)\b|&&|\|\||[|>;])/g;
+    return paintCode(source, pattern, (token) => {
+      if (token.startsWith("#")) return "comment";
+      if (/^["']/.test(token)) return "string";
+      if (token.startsWith("$")) return "variable";
+      if (token.startsWith("-")) return "option";
+      if (shellCommands.has(token)) return "function";
+      return "operator";
+    });
+  }
+  if (language === "json") {
+    const pattern = /("(?:\\.|[^"\\])*"\s*:|"(?:\\.|[^"\\])*"|\b(?:true|false|null)\b|-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b|[{}\[\],:])/gi;
+    return paintCode(source, pattern, (token) => {
+      if (/^"/.test(token)) return /:\s*$/.test(token) ? "property" : "string";
+      if (/^(?:true|false|null)$/i.test(token)) return "keyword";
+      if (/^-?\d/.test(token)) return "number";
+      return "operator";
+    });
+  }
+  if (language === "html") {
+    const pattern = /(&lt;!--[\s\S]*?--&gt;|<!--[\s\S]*?-->|<\/?[A-Za-z][^>]*>|"(?:\\.|[^"\\])*")/g;
+    return paintCode(source, pattern, (token) => token.startsWith("<!--") ? "comment" : token.startsWith('"') ? "string" : "keyword");
+  }
+  return escapeCode(source);
+};
+
+const languageLabels = { python: "Python", shell: "Terminal", json: "JSON", html: "HTML", text: "Code" };
+
 document.querySelectorAll("pre code").forEach((code) => {
+  const source = code.textContent;
+  const language = detectCodeLanguage(source, code);
+  code.innerHTML = highlightCode(source, language);
+  code.classList.add(`language-${language}`);
+  code.parentElement.classList.add("has-syntax");
+  code.parentElement.dataset.language = languageLabels[language] || language.toUpperCase();
   const button = document.createElement("button");
   button.className = "copy";
   button.type = "button";
   button.textContent = "Copy";
   button.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(code.textContent.trim());
+    await navigator.clipboard.writeText(source.trim());
     button.textContent = "Copied";
     window.setTimeout(() => { button.textContent = "Copy"; }, 1300);
   });
