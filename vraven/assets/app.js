@@ -117,11 +117,13 @@ const shellCommands = new Set(["cd", "curl", "echo", "export", "git", "mkdir", "
 
 const highlightCode = (source, language) => {
   if (language === "python") {
-    const pattern = /("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\b(?:False|None|True|and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\b|\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b|[+\-*\/%=<>!&|^~:@]+|\b[A-Za-z_]\w*(?=\s*\())/gi;
+    const pattern = /("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#[^\n]*|\b(?:False|None|True|and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\b|\bvraven\b|\b[A-Z][A-Za-z0-9_]*\b|\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b|[+\-*\/%=<>!&|^~:@]+|\b[A-Za-z_]\w*(?=\s*\())/g;
     return paintCode(source, pattern, (token) => {
       if (token.startsWith("#")) return "comment";
       if (/^["']/.test(token)) return "string";
       if (pythonKeywords.has(token)) return "keyword";
+      if (token === "vraven") return "namespace";
+      if (/^[A-Z]/.test(token)) return "class";
       if (/^\d/.test(token)) return "number";
       if (/^[+\-*\/%=<>!&|^~:@]/.test(token)) return "operator";
       return "function";
@@ -154,7 +156,7 @@ const highlightCode = (source, language) => {
   return escapeCode(source);
 };
 
-const languageLabels = { python: "Python", shell: "Terminal", json: "JSON", html: "HTML", text: "Code" };
+const languageLabels = { python: "VRAVEN · Python", shell: "VRAVEN · Terminal", json: "VRAVEN · JSON", html: "VRAVEN · HTML", text: "VRAVEN · Code" };
 
 document.querySelectorAll("pre code").forEach((code) => {
   const source = code.textContent;
@@ -174,6 +176,74 @@ document.querySelectorAll("pre code").forEach((code) => {
   });
   code.parentElement.append(button);
 });
+
+const visualRoutes = {
+  "Activation Energy": "outputs/proof/activation-energy.html",
+  "Decision Flow": "outputs/proof/decision-flow.html",
+  "Decision Sankey": "outputs/proof/decision-sankey.html",
+  "Spectral Trace": "outputs/proof/spectral-trace.html",
+  "Neuron Impact": "outputs/proof/neuron-impact.html",
+  "Neuron Importance": "outputs/proof/neuron-importance.html",
+  "Attention Structure": "outputs/proof/attention-structure.html",
+  "Latent Flight": "api/index.html?q=latent_flight",
+  "Reasoning DNA": "outputs/proof/reasoning-dna.html",
+  "Conflict Field": "outputs/proof/conflict-field.html",
+  "Evidence Trajectory": "outputs/proof/evidence-trajectory.html",
+  "Causal Pathway": "outputs/proof/causal-pathway.html",
+  "Mechanism Concordance": "outputs/proof/mechanism-concordance.html",
+  "Input Attribution": "outputs/proof/input-attribution.html",
+  "Feature Sequence Heatmap": "outputs/proof/feature-sequence-heatmap.html",
+  "Reasoning Graph": "outputs/proof/reasoning-graph.html",
+  "Community Graph": "outputs/atlas/activation-community-graph.html",
+  "Relevance Flow": "outputs/proof/relevance-flow.html",
+  "Perturbation Stability": "outputs/proof/perturbation-stability.html",
+  "Counterfactual Delta": "outputs/proof/counterfactual-delta.html",
+  "Raven Eye · Model X-ray": "outputs/reverse/raven-eye-model-x-ray.html",
+  "Raven Flight · Concept Genome": "outputs/reverse/raven-flight-concept-genome.html",
+  "Raven Brain · Causal Proof": "outputs/reverse/raven-brain-causal-proof.html",
+  "Raven Code · Programme Proof": "outputs/reverse/raven-code-programme-proof.html",
+  "Raven Contrast": "outputs/reverse/raven-contrast.html",
+  "Raven Shadow": "outputs/reverse/raven-shadow-counterfactual.html",
+  "Raven Dark Matter": "outputs/reverse/raven-dark-matter.html",
+  "Activation Community Graph": "outputs/atlas/activation-community-graph.html",
+  "Reasoning Landscape": "outputs/atlas/reasoning-landscape.html",
+  "Representation Outliers": "outputs/atlas/reasoning-outliers.html",
+  "Sample Similarity": "outputs/atlas/reasoning-similarity.html",
+  "Model Evolution": "outputs/watch/model-evolution.html",
+  "Model Comparison": "outputs/compare/model-comparison.html",
+  "Decision Circuitry": "outputs/darkside/decision-circuitry.html",
+  "Shortcut Detection": "outputs/darkside/shortcut-reliance.html",
+  "Prediction Depth": "outputs/darkside/prediction-depth.html",
+  "Class-conditional Internals": "outputs/darkside/class-conditional-internals.html",
+  "Representation Drift": "outputs/darkside/representation-drift.html",
+  "Failure Anatomy": "api/index.html?q=failure_anatomy",
+  "Stability Geometry": "outputs/darkside/stability-geometry.html",
+  "Method Disagreement": "api/index.html?q=method_disagreement",
+  "Unused Capacity": "outputs/darkside/unused-capacity.html",
+  "Adversarial Rerouting": "outputs/darkside/adversarial-rerouting.html",
+  "Cost–evidence Trade-off": "outputs/darkside/cost-evidence-trade-off.html",
+  "Circuit Multiplicity": "outputs/darkside/circuit-multiplicity.html",
+  "Causal Synergy": "outputs/darkside/causal-synergy.html",
+  "Activation Mediation": "outputs/darkside/activation-mediation.html",
+  "Topological Shift": "outputs/darkside/topological-shift.html",
+  "Explanation Uncertainty": "outputs/darkside/explanation-uncertainty.html",
+  "Mechanism Transfer": "outputs/darkside/mechanism-transfer.html",
+  "High-confidence OOD": "outputs/darkside/high-confidence-ood.html",
+};
+
+if (current === "visuals") {
+  document.querySelectorAll(".catalogue-item").forEach((item) => {
+    const title = item.querySelector("strong")?.textContent.trim();
+    const route = visualRoutes[title];
+    if (!route) return;
+    const link = document.createElement("a");
+    link.className = item.className;
+    link.href = `${root}/${route}`;
+    link.setAttribute("aria-label", `${title}: open usage and example`);
+    link.innerHTML = `${item.innerHTML}<span class="catalogue-open">Open guide →</span>`;
+    item.replaceWith(link);
+  });
+}
 
 const referenceFilter = document.querySelector("#reference-filter");
 if (referenceFilter) {

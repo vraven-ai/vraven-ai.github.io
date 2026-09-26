@@ -161,6 +161,11 @@ footer { margin-top: 70px; color: #727887; font-size: .8rem; }
 .shot-body { padding: 16px 18px 18px; }
 .shot-body strong { display: block; font-size: 1rem; }
 .shot-body span { color: var(--muted); font-size: .8rem; }
+.gallery-grid a.shot { color: inherit; text-decoration: none; }
+.shot-body em { display: block; margin-top: 11px; color: #79a9df; font-size: .72rem; font-style: normal; font-weight: 800; }
+.gallery-grid a.shot:hover .shot-body strong,
+.gallery-grid a.shot:focus-visible .shot-body strong { color: #ea7482; }
+.gallery-grid a.shot:focus-visible { outline: 2px solid #8d2332; outline-offset: 3px; }
 .terminal { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #02070c; box-shadow: var(--shadow); }
 .terminal-top { display: flex; align-items: center; gap: 6px; padding: 11px 14px; border-bottom: 1px solid var(--line); background: #0a1420; }
 .terminal-top i { width: 8px; height: 8px; border-radius: 50%; background: #46566a; }
@@ -487,6 +492,8 @@ pre.has-syntax::after {
 pre.has-syntax code { color: #d9d4cc; text-shadow: 0 1px #000; }
 .tok-keyword { color: #78aaf2; font-weight: 700; }
 .tok-function { color: #9bc4ff; }
+.tok-namespace { color: #4e9cff; font-weight: 800; }
+.tok-class { color: #f05f75; font-weight: 750; }
 .tok-string { color: #e46b79; }
 .tok-property { color: #80b6ff; }
 .tok-option { color: #e06a79; }
@@ -496,6 +503,25 @@ pre.has-syntax code { color: #d9d4cc; text-shadow: 0 1px #000; }
 .tok-comment { color: #747b87; font-style: italic; }
 .terminal pre.has-syntax { padding-top: 20px; border-left: 0; box-shadow: none; }
 .terminal pre.has-syntax::before, .terminal pre.has-syntax::after { display: none; }
+
+.catalogue a.catalogue-item { position: relative; color: inherit; text-decoration: none; padding-right: 132px; }
+.catalogue a.catalogue-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(#bd1c31, #326cac);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform .2s ease;
+}
+.catalogue a.catalogue-item:hover,
+.catalogue a.catalogue-item:focus-visible { border-color: #684248; background: #171416; outline: none; }
+.catalogue a.catalogue-item:hover::before,
+.catalogue a.catalogue-item:focus-visible::before { transform: scaleY(1); }
+.catalogue a.catalogue-item strong { color: #f2ece3; }
+.catalogue a.catalogue-item:hover strong { color: #eb7786; }
+.catalogue-open { position: absolute; right: 17px; color: #7ca9df; font-size: .72rem; font-weight: 800; white-space: nowrap; }
 
 /* Identity and origin — the raven mark, the name, and the research lineage. */
 .vraven-wordmark {
@@ -746,6 +772,8 @@ pre.has-syntax code { color: #d9d4cc; text-shadow: 0 1px #000; }
   .research-link .button { justify-self: start; }
   .research-principle { grid-template-columns: 1fr; }
   .paper { grid-template-columns: 1fr; gap: 9px; }
+  .catalogue a.catalogue-item { padding-right: 17px; }
+  .catalogue-open { position: static; grid-column: 1 / -1; margin-top: 4px; }
   .identity-banner, .identity-hero { grid-template-columns: 1fr; }
   .identity-banner { gap: 26px; padding: 26px; }
   .identity-signature { border-right: 0; border-bottom: 1px solid #472c30; padding: 4px 0 25px; }
