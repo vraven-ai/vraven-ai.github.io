@@ -1,6 +1,7 @@
 const sections = [
   ["Start", [
     ["home", "Overview", "index.html"],
+    ["identity", "Identity and origin", "identity.html"],
     ["start", "Install and start", "guides/getting-started.html"],
     ["folder", "Use a model folder", "guides/model-folder.html"],
   ]],
@@ -45,13 +46,13 @@ document.body.insertAdjacentHTML("afterbegin", `
   <aside class="sidebar" aria-label="Documentation navigation">
     <a class="brand" href="${root}/index.html">
       <img src="${root}/assets/vraven-avatar.png" alt="">
-      <span><strong>VRAVEN</strong><span>Explainability documentation</span></span>
+      <span><strong>VRAVEN</strong><span>Evidence-aware explainability</span></span>
     </a>
     <div class="nav-scroll">${nav}</div>
     <div class="sidebar-bottom">
       <a href="https://github.com/vraven-ai/vraven">GitHub</a>
       <a href="https://pypi.org/project/vraven/">PyPI</a>
-      <p>Local-first model explanation.<br>Apache-2.0.</p>
+      <p>Visual Reasoning and Activation Visualisation for Explainable Networks.</p>
     </div>
   </aside>`);
 
@@ -117,12 +118,12 @@ document.addEventListener("keydown", (event) => {
 const footer = document.querySelector("footer");
 if (footer && !footer.querySelector(".footer-meta")) {
   const original = footer.innerHTML;
-  footer.innerHTML = `<div class="footer-note">${original}</div><div class="footer-meta"><span>© 2026 VRAVEN</span><time datetime="2026-09-26">Updated 26 September 2026</time><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
+  footer.innerHTML = `<div class="footer-note">${original}</div><div class="footer-meta"><span>© 2026 VRAVEN</span><time datetime="2026-09-26">Updated 26 September 2026</time><a href="${root}/identity.html">Identity &amp; origin</a><a href="${root}/research.html">Research lineage</a><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
 }
 
 if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
   document.body.classList.add("motion-ready");
-  const revealTargets = document.querySelectorAll(".section-head, .family, .card, .shot, .hero-card, .pathway, .evidence-figure, .paper");
+  const revealTargets = document.querySelectorAll(".section-head, .family, .card, .shot, .hero-card, .pathway, .evidence-figure, .paper, .identity-banner, .origin-section, .translation-grid article, .lineage-statement");
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
