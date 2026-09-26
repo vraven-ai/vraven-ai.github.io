@@ -116,9 +116,8 @@ document.addEventListener("keydown", (event) => {
 });
 
 const footer = document.querySelector("footer");
-if (footer && !footer.querySelector(".footer-meta")) {
-  const original = footer.innerHTML;
-  footer.innerHTML = `<div class="footer-note">${original}</div><div class="footer-meta"><span>© 2026 VRAVEN</span><time datetime="2026-09-26">Updated 26 September 2026</time><a href="${root}/identity.html">Identity &amp; origin</a><a href="${root}/research.html">Research lineage</a><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
+if (footer) {
+  footer.innerHTML = `<div class="footer-note">VRAVEN · Visual Reasoning and Activation Visualisation for Explainable Networks · Apache-2.0</div><div class="footer-meta"><span>© 2026 VRAVEN</span><a href="${root}/identity.html">Identity &amp; origin</a><a href="${root}/research.html">Research lineage</a><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
 }
 
 if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
