@@ -61,6 +61,24 @@ menu?.addEventListener("click", () => {
   menu.textContent = open ? "Close" : "Menu";
 });
 
+const closeMenu = () => {
+  document.body.classList.remove("menu-open");
+  menu?.setAttribute("aria-expanded", "false");
+  if (menu) menu.textContent = "Menu";
+};
+
+document.querySelectorAll(".sidebar a").forEach((link) => {
+  link.addEventListener("click", closeMenu);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMenu();
+});
+
+document.querySelector(".page")?.addEventListener("click", () => {
+  if (document.body.classList.contains("menu-open") && window.matchMedia("(max-width: 900px)").matches) closeMenu();
+});
+
 document.querySelectorAll("pre code").forEach((code) => {
   const button = document.createElement("button");
   button.className = "copy";
