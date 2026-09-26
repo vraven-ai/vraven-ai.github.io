@@ -582,7 +582,14 @@ code.language-shell .tok-variable { color: #c792ea; }
 }
 .hero-wordmark { margin: 0 0 27px; font-size: clamp(3.3rem, 7vw, 6.7rem); }
 .identity-wordmark { margin: 24px 0 30px; font-size: clamp(3.8rem, 8vw, 7rem); }
-.banner-wordmark { margin-bottom: 20px; font-size: clamp(2.8rem, 5vw, 4.8rem); }
+.banner-wordmark {
+  display: block;
+  max-width: 100%;
+  margin-bottom: 20px;
+  font-size: clamp(2rem, 3.2vw, 3rem);
+  letter-spacing: .035em;
+  white-space: nowrap;
+}
 
 .brand-wordmark, .mobile-wordmark {
   color: #c9192e !important;
@@ -650,7 +657,7 @@ code.language-shell .tok-variable { color: #c792ea; }
   border-left: 3px solid var(--red);
   background: linear-gradient(115deg, #171214, var(--panel) 58%);
 }
-.identity-signature { padding: 8px 26px 12px 3px; border-right: 1px solid #472c30; }
+.identity-signature { min-width: 0; overflow: hidden; padding: 8px 26px 12px 3px; border-right: 1px solid #472c30; }
 .identity-signature > span { display: block; max-width: 31ch; color: #867e77; font: 700 .66rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
 .identity-banner h2 { margin: 8px 0 12px; }
 .identity-banner p { margin: 0 0 14px; color: var(--muted); }

@@ -6,7 +6,7 @@
     <section class="step"><h2>Create a clean environment</h2><pre><code>python3.13 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip</code></pre><p>On Windows PowerShell, activate with <code>.venv\Scripts\Activate.ps1</code>.</p></section>
-    <section class="step"><h2>Install and inspect</h2><pre><code>python -m pip install vraven==0.10.0
+    <section class="step"><h2>Install and inspect</h2><pre><code>python -m pip install vraven==0.10.1
 vraven --version
 vraven doctor</code></pre><p><code>doctor</code> reports Python, PyTorch, available devices and optional report capabilities.</p></section>
     <section class="step"><h2>Create your first report</h2><pre><code>vraven demo --mode gradient \

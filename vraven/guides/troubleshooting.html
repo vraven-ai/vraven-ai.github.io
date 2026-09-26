@@ -4,7 +4,7 @@
   <h2>“Requires-Python &gt;=3.10”</h2><p>Your <code>pip</code> belongs to an older interpreter. Create the environment with an explicit modern Python and always install through that environment's Python:</p><pre><code>python3.13 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-python -m pip install vraven==0.10.0</code></pre>
+python -m pip install vraven==0.10.1</code></pre>
   <h2>“No module named …” for the model factory</h2><p>Run from the project that contains the module, install your project into the environment, or place <code>architecture.py</code> inside a VRAVEN model bundle and use <code>architecture:Classifier</code>.</p>
   <h2>A model.pt file will not load</h2><p>Determine how it was saved. A state dictionary needs the original architecture factory. A full pickled module needs <code>--model-format pickle --trusted-model</code> and must come from a trusted source.</p>
   <h2>PDF export is unavailable</h2><p>Run <code>vraven doctor</code>. Use HTML immediately, or install a browser supported by the local PDF exporter.</p>
