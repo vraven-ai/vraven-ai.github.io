@@ -24,6 +24,7 @@ const sections = [
   ]],
   ["Science", [
     ["science", "Evidence and claims", "science.html"],
+    ["research", "Research foundations", "research.html"],
   ]],
 ];
 
@@ -121,7 +122,7 @@ if (footer && !footer.querySelector(".footer-meta")) {
 
 if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
   document.body.classList.add("motion-ready");
-  const revealTargets = document.querySelectorAll(".section-head, .family, .card, .shot, .hero-card, .pathway, .evidence-figure");
+  const revealTargets = document.querySelectorAll(".section-head, .family, .card, .shot, .hero-card, .pathway, .evidence-figure, .paper");
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
