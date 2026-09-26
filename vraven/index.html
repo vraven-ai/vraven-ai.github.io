@@ -2,17 +2,17 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="VRAVEN documentation: observe, test and explain trained PyTorch models with evidence-aware reports.">
-  <title>VRAVEN · Model observatory</title><link rel="stylesheet" href="assets/styles.css">
+  <meta name="description" content="VRAVEN is an evidence-aware PyTorch explainability toolkit for understanding predictions, testing mechanisms and publishing auditable reports.">
+  <title>VRAVEN · Evidence-aware AI explainability</title><link rel="stylesheet" href="assets/styles.css">
 </head>
 <body data-page="home" data-root=".">
 <div class="page"><main id="content" class="content">
   <section class="hero">
     <div>
-      <div class="eyebrow">Model observatory · local first</div>
-      <h1>Observe.<br>Test. Explain.</h1>
-      <p class="lede">VRAVEN turns trained PyTorch models into inspectable mechanisms, controlled tests and evidence-aware reports—from one prediction to an entire model population.</p>
-      <div class="actions"><a class="button primary" href="guides/getting-started.html">Run your first analysis</a><a class="button" href="outputs/index.html">Read the output guide</a></div>
+      <div class="eyebrow">Evidence-aware AI explainability · local first</div>
+      <h1>Understand why your model decided.</h1>
+      <p class="lede">VRAVEN is a PyTorch explainability and model-auditing toolkit. It turns predictions into inspectable evidence, tests internal mechanisms through controlled interventions, and produces reports that state what the evidence can—and cannot—support.</p>
+      <div class="actions"><a class="button primary" href="guides/getting-started.html">Explain your first model</a><a class="button" href="outputs/index.html">Explore real explanations</a></div>
       <div class="status-line"><span class="status">Runs locally</span><span class="status">Python 3.10+</span><span class="status">PyTorch 2.2+</span></div>
     </div>
     <div class="hero-mark"><img src="assets/vraven-avatar.png" alt="VRAVEN raven perched on a branch"></div>
@@ -33,14 +33,14 @@
     <article class="card"><span class="number">TERMINAL</span><h3><a href="cli/index.html">Complete CLI</a></h3><p>Every command, argument, default and direct <code>--help</code> route from the real parser.</p></article>
   </div>
 
-  <div class="section-head"><div><div class="eyebrow">Choose a lens</div><h2>One model. Seven ways to investigate it.</h2></div><p>Start with the scientific question, not a wall of options.</p></div>
+  <div class="section-head"><div><div class="eyebrow">Explainability with evidence</div><h2>Move beyond a single attribution map.</h2></div><p>Explain one prediction, test a suspected mechanism, compare models, or map reasoning across a dataset.</p></div>
   <div class="family-grid">
-    <a class="family" href="capabilities.html#capture"><span class="kicker">Acquire</span><h3>Capture</h3><p>Record activations, gradients, metadata and Mechanism IR from a real forward pass.</p><span class="count">01</span></a>
-    <a class="family" href="capabilities.html#proof"><span class="kicker">Explain</span><h3>Proof</h3><p>Build a single-prediction explanation with traceable evidence and exportable visuals.</p><span class="count">02</span></a>
-    <a class="family" href="capabilities.html#reverse"><span class="kicker">Decompile</span><h3>Reverse</h3><p>Recover the decision programme, test its fidelity and issue causal or robustness certificates.</p><span class="count">03</span></a>
-    <a class="family" href="capabilities.html#atlas"><span class="kicker">Map</span><h3>Atlas</h3><p>Explore representation communities, similarity, outliers and reasoning landscapes across samples.</p><span class="count">04</span></a>
-    <a class="family" href="capabilities.html#watch"><span class="kicker">Track</span><h3>Watch</h3><p>Measure how internal representations and decisions evolve across checkpoints.</p><span class="count">05</span></a>
-    <a class="family" href="capabilities.html#darkside"><span class="kicker">Audit</span><h3>Compare + DarkSide</h3><p>Contrast models, expose shortcuts, drift, failure anatomy, rerouting and uncertainty.</p><span class="count">06</span></a>
+    <a class="family" href="capabilities.html#capture"><span class="kicker">Acquire</span><h3>Capture</h3><p>Record activations, gradients, metadata and Mechanism IR from a real forward pass.</p></a>
+    <a class="family" href="capabilities.html#proof"><span class="kicker">Explain</span><h3>Proof</h3><p>Explain a single prediction with traceable evidence, competing signals and exportable visuals.</p></a>
+    <a class="family" href="capabilities.html#reverse"><span class="kicker">Decompile</span><h3>Reverse</h3><p>Recover the decision programme, test its fidelity and issue causal or robustness certificates.</p></a>
+    <a class="family" href="capabilities.html#atlas"><span class="kicker">Map</span><h3>Atlas</h3><p>Explore representation communities, similarity, outliers and reasoning landscapes across samples.</p></a>
+    <a class="family" href="capabilities.html#watch"><span class="kicker">Track</span><h3>Watch</h3><p>Measure how internal representations and decisions evolve across checkpoints.</p></a>
+    <a class="family" href="capabilities.html#darkside"><span class="kicker">Audit</span><h3>Compare + DarkSide</h3><p>Contrast models and expose shortcuts, drift, failure anatomy, rerouting and uncertainty.</p></a>
   </div>
 
   <div class="section-head"><div><div class="eyebrow">Public walkthrough</div><h2>Evidence you can inspect.</h2></div><p>These results come from torchvision MobileNetV2 and one openly licensed Labrador photograph.</p></div>

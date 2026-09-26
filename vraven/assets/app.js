@@ -44,7 +44,7 @@ document.body.insertAdjacentHTML("afterbegin", `
   <aside class="sidebar" aria-label="Documentation navigation">
     <a class="brand" href="${root}/index.html">
       <img src="${root}/assets/vraven-avatar.png" alt="">
-      <span><strong>VRAVEN</strong><span>Documentation</span></span>
+      <span><strong>VRAVEN</strong><span>Explainability documentation</span></span>
     </a>
     <div class="nav-scroll">${nav}</div>
     <div class="sidebar-bottom">
@@ -112,3 +112,26 @@ document.addEventListener("keydown", (event) => {
     : event.key.toLowerCase() === "j" ? document.querySelector('a[rel="next"]') : null;
   if (destination) destination.click();
 });
+
+const footer = document.querySelector("footer");
+if (footer && !footer.querySelector(".footer-meta")) {
+  const original = footer.innerHTML;
+  footer.innerHTML = `<div class="footer-note">${original}</div><div class="footer-meta"><span>© 2026 VRAVEN</span><time datetime="2026-09-26">Updated 26 September 2026</time><a href="https://github.com/vraven-ai/vraven">Source</a></div>`;
+}
+
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window) {
+  document.body.classList.add("motion-ready");
+  const revealTargets = document.querySelectorAll(".section-head, .family, .card, .shot, .hero-card, .pathway, .evidence-figure");
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -7%", threshold: 0.06 });
+  revealTargets.forEach((element, index) => {
+    element.classList.add("reveal");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 45}ms`);
+    revealObserver.observe(element);
+  });
+}

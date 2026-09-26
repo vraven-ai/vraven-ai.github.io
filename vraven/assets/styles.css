@@ -248,7 +248,7 @@ footer { margin-top: 70px; color: #727887; font-size: .8rem; }
   .license-note { align-items: flex-start; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
 
 /* Raven field guide — editorial documentation, not a neon product dashboard. */
@@ -272,12 +272,16 @@ footer { margin-top: 70px; color: #727887; font-size: .8rem; }
 body {
   background: var(--bg);
   font-family: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 h1, h2, h3 {
-  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-family: Charter, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   font-weight: 600;
   letter-spacing: -.018em;
 }
+h1, h2 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
 h1 { color: #f5efe4; }
 a { color: #d17b82; }
 a:hover { color: #fff8ec; }
@@ -293,7 +297,8 @@ a:hover { color: #fff8ec; }
 .button.primary { border-color: var(--red); background: var(--red); color: #fff8ed; box-shadow: none; }
 .card, .family, .catalogue-item { background: var(--panel); border-radius: 6px; }
 .family:hover { border-color: #765056; }
-.family .kicker, .family .count { color: #a7646d; }
+.family .kicker { color: #a7646d; }
+.family .count { display: none; }
 .hero-mark::before, .hero-mark::after { display: none; }
 .hero-mark img { border-radius: 5px; box-shadow: 18px 18px 0 #231719; }
 .metric { background: #121214; }
@@ -356,6 +361,53 @@ pre { border-radius: 4px; background: #101011; }
 .reference-search input { width: 100%; padding: 13px 15px; border: 1px solid var(--line); border-radius: 3px; outline: none; color: var(--text); background: #111113; font: inherit; text-transform: none; letter-spacing: 0; }
 .reference-search input:focus { border-color: #86545a; }
 .table-scroll { overflow-x: auto; }
+
+footer {
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.footer-note { max-width: 74ch; color: #88817b; }
+.footer-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 13px; color: #aaa29a; font-size: .76rem; }
+.footer-meta a { color: inherit; }
+
+/* Restrained editorial motion: hierarchy and orientation, never spectacle. */
+@keyframes raven-reveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes raven-mark {
+  from { opacity: 0; transform: translateY(10px) rotate(-1.5deg); }
+  to { opacity: 1; transform: translateY(0) rotate(0); }
+}
+.hero > div:first-child { animation: raven-reveal .62s cubic-bezier(.2,.7,.2,1) both; }
+.hero-mark img { animation: raven-mark .78s .08s cubic-bezier(.2,.7,.2,1) both; }
+.metrics { animation: raven-reveal .58s .14s cubic-bezier(.2,.7,.2,1) both; }
+.family, .card, .shot { transition: transform .22s ease, border-color .22s ease, background-color .22s ease; }
+.family::before, .card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--red);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform .24s ease;
+}
+.family:hover::before, .card:hover::before { transform: scaleY(1); }
+.family:hover, .card:hover, .shot:hover { transform: translateY(-3px); border-color: #6d4b50; }
+.card { position: relative; overflow: hidden; }
+.button { transition: transform .18s ease, border-color .18s ease, background-color .18s ease; }
+.brand img { transition: transform .28s ease; }
+.brand:hover img { transform: rotate(-2deg) translateY(-1px); }
+.motion-ready .reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .48s ease var(--reveal-delay, 0ms), transform .48s cubic-bezier(.2,.7,.2,1) var(--reveal-delay, 0ms), border-color .22s ease;
+}
+.motion-ready .reveal.is-visible { opacity: 1; transform: translateY(0); }
+.motion-ready .family.reveal.is-visible:hover,
+.motion-ready .card.reveal.is-visible:hover,
+.motion-ready .shot.reveal.is-visible:hover { transform: translateY(-3px); }
 
 /* Intermediate laptop widths keep the reading column comfortable. */
 @media (min-width: 901px) and (max-width: 1200px) {
