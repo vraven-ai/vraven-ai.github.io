@@ -40,13 +40,13 @@ const nav = sections.map(([section, pages]) => `
 document.body.insertAdjacentHTML("afterbegin", `
   <a class="skip-link" href="#content">Skip to content</a>
   <header class="mobile-bar">
-    <a href="${root}/index.html">VRAVEN</a>
+    <a class="mobile-wordmark" href="${root}/index.html">VRAVEN</a>
     <button class="menu-button" type="button" aria-label="Open documentation menu" aria-expanded="false">Menu</button>
   </header>
   <aside class="sidebar" aria-label="Documentation navigation">
     <a class="brand" href="${root}/index.html">
       <img src="${root}/assets/vraven-avatar.png" alt="">
-      <span><strong>VRAVEN</strong><span>Evidence-aware explainability</span></span>
+      <span><strong class="brand-wordmark">VRAVEN</strong><span>Evidence-aware explainability</span></span>
     </a>
     <div class="nav-scroll">${nav}</div>
     <div class="sidebar-bottom">

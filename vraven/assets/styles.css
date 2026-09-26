@@ -455,25 +455,122 @@ footer {
 .paper > a { white-space: nowrap; text-decoration: none; font-size: .8rem; font-weight: 700; }
 
 /* Identity and origin — the raven mark, the name, and the research lineage. */
+.vraven-wordmark {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  width: max-content;
+  max-width: 100%;
+  color: #b90d21;
+  background: linear-gradient(180deg, #ff4052 0%, #b4091e 43%, #62030e 72%, #0a0002 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: Copperplate, Baskerville, "Iowan Old Style", Georgia, serif;
+  font-weight: 900;
+  line-height: .82;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, .9), 0 8px 22px rgba(134, 0, 20, .2);
+  filter: saturate(1.08) contrast(1.08);
+}
+.vraven-wordmark::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: .045em auto auto .04em;
+  z-index: -1;
+  color: #020203;
+  -webkit-text-fill-color: #020203;
+  text-shadow: 0 .045em .02em #000;
+}
+.vraven-wordmark::after {
+  content: "";
+  position: absolute;
+  left: 16%;
+  bottom: -.19em;
+  width: .055em;
+  height: .23em;
+  border-radius: 0 0 99px 99px;
+  background: linear-gradient(#870414, #250005 80%, transparent);
+  box-shadow:
+    1.05em .05em 0 -.012em #69030f,
+    2.15em -.02em 0 -.018em #300006,
+    3.25em .08em 0 -.012em #8f0618,
+    4.25em .01em 0 -.02em #430008;
+  opacity: .9;
+}
+.hero-wordmark { margin: 0 0 27px; font-size: clamp(3.3rem, 7vw, 6.7rem); }
+.identity-wordmark { margin: 24px 0 30px; font-size: clamp(3.8rem, 8vw, 7rem); }
+.banner-wordmark { margin-bottom: 20px; font-size: clamp(2.8rem, 5vw, 4.8rem); }
+
+.brand-wordmark, .mobile-wordmark {
+  color: #c9192e !important;
+  background: linear-gradient(180deg, #f34151, #9a0718 62%, #150003);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: Copperplate, Baskerville, "Iowan Old Style", Georgia, serif !important;
+  font-weight: 900 !important;
+  text-shadow: 1px 2px 0 #000;
+}
+.brand-wordmark { font-size: 1.18rem !important; }
+.mobile-wordmark { font-size: 1.04rem; letter-spacing: .11em !important; }
+
+.raven-portrait {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #4b3034;
+  background: linear-gradient(145deg, #211417, #0a090a 64%);
+  box-shadow: 18px 18px 0 #231416, 0 28px 72px rgba(0, 0, 0, .46);
+}
+.raven-portrait::before {
+  content: "";
+  position: absolute;
+  inset: -8px auto -8px -8px;
+  width: 2px;
+  background: linear-gradient(transparent, #c7192c 18%, #3c030b 82%, transparent);
+}
+.raven-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0 !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+.raven-portrait figcaption {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: baseline;
+  margin: 0 !important;
+  padding: 12px 4px 3px;
+  color: #8f8580;
+  font: 700 .62rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .065em;
+  text-transform: uppercase;
+}
+.raven-portrait figcaption span { color: #bd5360; }
+.raven-portrait figcaption strong { color: #aba29a; font-weight: 600; text-align: right; }
+.hero-mark { min-height: 405px; }
+.hero-mark .raven-portrait { width: 278px; transform: rotate(1deg); }
+.hero-mark .raven-portrait:hover { transform: rotate(0); }
+
 .identity-banner {
   display: grid;
-  grid-template-columns: 190px minmax(0, 1fr);
-  gap: 34px;
+  grid-template-columns: minmax(220px, .65fr) minmax(0, 1.35fr);
+  gap: 44px;
   align-items: center;
   margin: 58px 0 30px;
-  padding: 28px;
+  padding: 34px;
   border: 1px solid var(--line);
   border-left: 3px solid var(--red);
   background: linear-gradient(115deg, #171214, var(--panel) 58%);
 }
-.identity-banner img {
-  width: 190px;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border: 1px solid #4a3034;
-  border-radius: 5px;
-  box-shadow: 12px 12px 0 #261719;
-}
+.identity-signature { padding: 8px 26px 12px 3px; border-right: 1px solid #472c30; }
+.identity-signature > span { display: block; max-width: 31ch; color: #867e77; font: 700 .66rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; text-transform: uppercase; }
 .identity-banner h2 { margin: 8px 0 12px; }
 .identity-banner p { margin: 0 0 14px; color: var(--muted); }
 .identity-banner a { font-weight: 700; text-decoration: none; }
@@ -487,21 +584,7 @@ footer {
   border-bottom: 1px solid var(--line);
 }
 .identity-hero h1 { margin-bottom: 18px; }
-.identity-hero figure { margin: 0; }
-.identity-hero figure img {
-  display: block;
-  width: 100%;
-  border: 1px solid #4a3034;
-  border-radius: 5px;
-  box-shadow: 18px 18px 0 #251719;
-}
-.identity-hero figcaption {
-  margin: 14px 0 0 18px;
-  color: #8f8580;
-  font: 700 .68rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
+.identity-hero .raven-portrait { width: min(100%, 300px); justify-self: end; }
 .origin-section { margin-top: 68px; }
 .origin-section > p { max-width: 76ch; color: #c3bbb2; }
 .acronym-grid {
@@ -578,7 +661,7 @@ footer {
   .content, .content.narrow { width: min(calc(100% - 36px), 880px); }
   .hero { grid-template-columns: minmax(0, 1fr) 220px; gap: 28px; }
   .hero-mark { min-height: 280px; }
-  .hero-mark img { width: 210px; }
+  .hero-mark .raven-portrait { width: 210px; }
   .gallery-grid { grid-template-columns: 1fr; }
 }
 
@@ -621,7 +704,8 @@ footer {
   .research-principle { grid-template-columns: 1fr; }
   .paper { grid-template-columns: 1fr; gap: 9px; }
   .identity-banner, .identity-hero { grid-template-columns: 1fr; }
-  .identity-banner img { width: min(190px, 70vw); }
+  .identity-banner { gap: 26px; padding: 26px; }
+  .identity-signature { border-right: 0; border-bottom: 1px solid #472c30; padding: 4px 0 25px; }
   .identity-hero figure { width: min(300px, 82vw); }
   .acronym-grid, .translation-grid { grid-template-columns: 1fr; }
   .lineage-statement { grid-template-columns: 1fr; gap: 10px; }
@@ -631,7 +715,9 @@ footer {
   .content, .content.narrow { width: min(calc(100% - 24px), 396px); }
   .mobile-bar { height: 56px; }
   .hero-mark { min-height: 190px; }
-  .hero-mark img { width: min(176px, 64vw); box-shadow: 10px 10px 0 #231719; }
+  .hero-mark .raven-portrait { width: min(210px, 72vw); box-shadow: 10px 10px 0 #231719; }
+  .hero-wordmark { font-size: clamp(2.8rem, 18vw, 4.2rem); }
+  .identity-wordmark { font-size: clamp(3rem, 19vw, 4.4rem); }
   .metrics { grid-template-columns: 1fr; }
   .metric { min-width: 0; }
   .actions { display: grid; grid-template-columns: 1fr; }
