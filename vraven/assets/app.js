@@ -32,6 +32,16 @@ const sections = [
 
 const root = document.body.dataset.root || ".";
 const current = document.body.dataset.page;
+
+const getSavedTheme = () => localStorage.getItem("vraven_theme") || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+const applyTheme = (theme) => {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("vraven_theme", theme);
+  const btn = document.querySelector(".theme-toggle span");
+  if (btn) btn.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
+};
+applyTheme(getSavedTheme());
+
 const nav = sections.map(([section, pages]) => `
   <div class="nav-label">${section}</div>
   <nav class="nav">${pages.map(([id, label, path]) =>
@@ -46,16 +56,221 @@ document.body.insertAdjacentHTML("afterbegin", `
   </header>
   <aside class="sidebar" aria-label="Documentation navigation">
     <a class="brand" href="${root}/index.html">
-      <img src="${root}/assets/vraven-avatar.png" alt="">
+      <img src="${root}/assets/vraven-avatar.png" alt="VRAVEN Avatar">
       <span><strong class="brand-wordmark">VRAVEN</strong><span>Evidence-aware explainability</span></span>
     </a>
+    <button class="search-trigger" type="button" aria-label="Open global search">
+      <span class="search-trigger-left">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span>Search docs...</span>
+      </span>
+      <kbd class="search-kbd">⌘K</kbd>
+    </button>
     <div class="nav-scroll">${nav}</div>
     <div class="sidebar-bottom">
-      <a href="https://github.com/vraven-ai/vraven">GitHub</a>
-      <a href="https://pypi.org/project/vraven/">PyPI</a>
-      <p>Visual Reasoning and Activation Visualisation for Explainable Networks.</p>
+      <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+        <a href="https://github.com/vraven-ai/vraven">GitHub</a>
+        <a href="https://pypi.org/project/vraven/">PyPI</a>
+      </div>
+      <p style="margin: 0 0 8px;">Visual Reasoning &amp; Activation Visualisation for PyTorch.</p>
+      <button class="theme-toggle" type="button">
+        <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-5.4-5.4c0-1.81.89-3.42 2.26-4.4C12.92 3.04 12.46 3 12 3z"/></svg>
+        <span>${getSavedTheme() === "light" ? "Dark Mode" : "Light Mode"}</span>
+      </button>
     </div>
-  </aside>`);
+  </aside>
+
+  <!-- Global Search Modal -->
+  <div class="search-backdrop" id="search-modal" aria-hidden="true">
+    <div class="search-modal" role="dialog" aria-modal="true" aria-label="Search documentation">
+      <div class="search-input-header">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="search-input" id="search-input" type="search" placeholder="Search guides, API, CLI, visual outputs..." autocomplete="off">
+        <kbd class="search-kbd">ESC</kbd>
+      </div>
+      <div class="search-results-list" id="search-results"></div>
+      <div class="search-footer">
+        <span>Press <kbd class="search-kbd">↑</kbd> <kbd class="search-kbd">↓</kbd> to navigate</span>
+        <span><kbd class="search-kbd">↵</kbd> to select</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
+`);
+
+// Attach theme toggle listener
+document.querySelector(".theme-toggle")?.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+  applyTheme(nextTheme);
+});
+
+const searchItems = [
+  { title: "Documentation Overview", category: "Guide", desc: "Introduction to VRAVEN PyTorch explainability toolkit.", url: "index.html" },
+  { title: "Identity and Origin", category: "Guide", desc: "Why the raven watches the model: origin, logo mark, and acronym.", url: "identity.html" },
+  { title: "Install and Quickstart", category: "Guide", desc: "Install vraven with pip and explain your first PyTorch model.", url: "guides/getting-started.html" },
+  { title: "Use a Model Folder", category: "Guide", desc: "Load and audit PyTorch models from local directory structures.", url: "guides/model-folder.html" },
+  { title: "Develop from Source", category: "Guide", desc: "Checkout and build VRAVEN from source repository.", url: "guides/source-checkout.html" },
+  { title: "Explain a Model Decision", category: "Tutorial", desc: "Step-by-step tutorial on tracing model predictions to activation pathways.", url: "guides/explain.html" },
+  { title: "Adversarial Stress Testing", category: "Tutorial", desc: "Evaluate model robustness under adversarial perturbations and rerouting.", url: "guides/adversarial.html" },
+  { title: "Counterfactual Explanations", category: "Tutorial", desc: "Generate minimal perturbation counterfactual proofs for predictions.", url: "guides/counterfactual.html" },
+  { title: "MobileNetV2 Case Study", category: "Tutorial", desc: "Complete end-to-end evidence walkthrough on torchvision MobileNetV2.", url: "walkthroughs/mobilenet-v2.html" },
+  { title: "Output Catalogue & Guide", category: "Output", desc: "Catalogue of 57 visual outputs, decision proofs, and DarkSide audits.", url: "outputs/index.html" },
+  { title: "Capability Map", category: "Output", desc: "Overview of Capture, Proof, Reverse, Atlas, Watch, and DarkSide modules.", url: "capabilities.html" },
+  { title: "Visual Catalogue", category: "Output", desc: "Visual index of heatmaps, graphs, trajectories, and decision flows.", url: "visuals.html" },
+  { title: "Example Gallery", category: "Output", desc: "Gallery of real visual outputs and model evidence reports.", url: "gallery.html" },
+  { title: "Decision Flow Graph", category: "Output", desc: "Supporting and opposing activation signals across captured layers.", url: "outputs/proof/decision-flow.html" },
+  { title: "Neuron Impact Map", category: "Output", desc: "Measure individual neuron relevance to target output classes.", url: "outputs/proof/neuron-impact.html" },
+  { title: "Causal Pathway Proof", category: "Output", desc: "Controlled layer-output interventions for causal decision verification.", url: "outputs/proof/causal-pathway.html" },
+  { title: "Shortcut Reliance Audit", category: "Output", desc: "Detect feature shortcuts and background reliance in predictions.", url: "outputs/darkside/shortcut-reliance.html" },
+  { title: "Python API Reference", category: "API", desc: "Complete documentation for 175 PyTorch API symbols and classes.", url: "api/index.html" },
+  { title: "CLI Command Reference", category: "CLI", desc: "Command line interface documentation for all 22 vraven CLI routes.", url: "cli/index.html" },
+  { title: "Report Formats & Export", category: "Guide", desc: "Export decision proofs into HTML, JSON, and Markdown audit reports.", url: "guides/reports.html" },
+  { title: "Troubleshooting Guide", category: "Guide", desc: "Common errors, PyTorch hook issues, and performance optimization.", url: "guides/troubleshooting.html" },
+  { title: "Evidence and Claims", category: "Science", desc: "Scientific framework for bounded claims, evidence levels, and audit fidelity.", url: "science.html" },
+  { title: "Research Foundations", category: "Science", desc: "Academic research citations, mechanistic interpretability, and XAI literature.", url: "research.html" }
+];
+
+const searchModal = document.getElementById("search-modal");
+const searchInput = document.getElementById("search-input");
+const searchResults = document.getElementById("search-results");
+let selectedResultIndex = 0;
+
+const openSearchModal = () => {
+  searchModal.classList.add("is-open");
+  searchModal.setAttribute("aria-hidden", "false");
+  searchInput.value = "";
+  renderSearchResults("");
+  window.setTimeout(() => searchInput.focus(), 50);
+};
+
+const closeSearchModal = () => {
+  searchModal.classList.remove("is-open");
+  searchModal.setAttribute("aria-hidden", "true");
+};
+
+const renderSearchResults = (query) => {
+  const cleanQuery = query.trim().toLowerCase();
+  const matches = cleanQuery === ""
+    ? searchItems.slice(0, 8)
+    : searchItems.filter(item =>
+        item.title.toLowerCase().includes(cleanQuery) ||
+        item.desc.toLowerCase().includes(cleanQuery) ||
+        item.category.toLowerCase().includes(cleanQuery)
+      );
+
+  selectedResultIndex = 0;
+
+  if (matches.length === 0) {
+    searchResults.innerHTML = `<div class="search-empty">No results found matching "<strong>${escapeCode(cleanQuery)}</strong>"</div>`;
+    return;
+  }
+
+  searchResults.innerHTML = matches.map((item, idx) => `
+    <a class="search-result-item${idx === 0 ? ' is-selected' : ''}" href="${root}/${item.url}">
+      <div>
+        <div class="search-result-title">
+          <span>${item.title}</span>
+          <span class="search-result-tag tag-${item.category.toLowerCase()}">${item.category}</span>
+        </div>
+        <div class="search-result-desc">${item.desc}</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  `).join("");
+};
+
+document.querySelector(".search-trigger")?.addEventListener("click", openSearchModal);
+searchModal?.addEventListener("click", (e) => {
+  if (e.target === searchModal) closeSearchModal();
+});
+
+searchInput?.addEventListener("input", (e) => {
+  renderSearchResults(e.target.value);
+});
+
+searchInput?.addEventListener("keydown", (e) => {
+  const items = searchResults.querySelectorAll(".search-result-item");
+  if (!items.length) return;
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    items[selectedResultIndex]?.classList.remove("is-selected");
+    selectedResultIndex = (selectedResultIndex + 1) % items.length;
+    items[selectedResultIndex]?.classList.add("is-selected");
+    items[selectedResultIndex]?.scrollIntoView({ block: "nearest" });
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    items[selectedResultIndex]?.classList.remove("is-selected");
+    selectedResultIndex = (selectedResultIndex - 1 + items.length) % items.length;
+    items[selectedResultIndex]?.classList.add("is-selected");
+    items[selectedResultIndex]?.scrollIntoView({ block: "nearest" });
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    items[selectedResultIndex]?.click();
+  }
+});
+
+// Keyboard shortcut listener for Cmd+K, Ctrl+K, and /
+document.addEventListener("keydown", (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    if (searchModal.classList.contains("is-open")) {
+      closeSearchModal();
+    } else {
+      openSearchModal();
+    }
+  } else if (e.key === "Escape" && searchModal.classList.contains("is-open")) {
+    closeSearchModal();
+  }
+});
+
+const mainContent = document.querySelector(".content");
+if (mainContent && current && current !== "home") {
+  const currentSection = sections.find(([_, pages]) => pages.some(([id]) => id === current));
+  if (currentSection) {
+    const pageObj = currentSection[1].find(([id]) => id === current);
+    const breadcrumbsHTML = `
+      <nav class="breadcrumbs" aria-label="Breadcrumb navigation">
+        <a href="${root}/index.html">Home</a>
+        <span>/</span>
+        <span>${currentSection[0]}</span>
+        <span>/</span>
+        <strong style="color: var(--text);">${pageObj ? pageObj[1] : ''}</strong>
+      </nav>
+    `;
+    mainContent.insertAdjacentHTML("afterbegin", breadcrumbsHTML);
+  }
+}
+
+// Add Colab badge to key guides
+if (current && ["start", "explain", "adversarial", "counterfactual", "walkthrough"].includes(current)) {
+  const h1 = mainContent?.querySelector("h1");
+  if (h1) {
+    const colabHTML = `
+      <a class="colab-badge" href="https://colab.research.google.com/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M16.9 15.4c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5zm-9.8 0c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"/></svg>
+        <span>Open in Google Colab</span>
+      </a>
+    `;
+    h1.insertAdjacentHTML("afterend", colabHTML);
+  }
+}
+
+const backToTopBtn = document.getElementById("back-to-top");
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 320) {
+    backToTopBtn?.classList.add("is-visible");
+  } else {
+    backToTopBtn?.classList.remove("is-visible");
+  }
+});
+backToTopBtn?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
 
 const menu = document.querySelector(".menu-button");
 menu?.addEventListener("click", () => {
