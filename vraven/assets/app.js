@@ -251,7 +251,7 @@ if (current && ["start", "explain", "adversarial", "counterfactual", "walkthroug
   const h1 = mainContent?.querySelector("h1");
   if (h1) {
     const colabHTML = `
-      <a class="colab-badge" href="https://colab.research.google.com/" target="_blank" rel="noopener noreferrer">
+      <a class="colab-badge" href="https://colab.research.google.com/github/vraven-ai/vraven/blob/main/examples/notebooks/vraven_colab_quickstart.ipynb" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24"><path d="M16.9 15.4c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5zm-9.8 0c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"/></svg>
         <span>Open in Google Colab</span>
       </a>
