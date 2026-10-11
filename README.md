@@ -24,6 +24,13 @@ reaches a decision. It captures internal evidence, tests candidate mechanisms
 through controlled interventions and produces auditable reports that distinguish
 observation from causal evidence. Models and traces remain local by default.
 
+> **More than fifteen years of research, brought into one product.** VRAVEN
+> synthesises modern neural-network explanation research from 2010 to the
+> present, connecting local decision explanation, attribution, concept testing,
+> faithfulness evaluation, causal abstraction, mechanistic interpretability and
+> programme extraction in one testable workflow. The underlying innovations
+> remain the work of their original authors and research communities.
+
 ## The VRAVEN methodology
 
 The methodology connects a trained model to an evidence-tested Decision Proof.
